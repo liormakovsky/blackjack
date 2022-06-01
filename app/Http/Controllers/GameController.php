@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Games\Blackjack\Http\Controllers;
+namespace App\Http\Controllers;
 
-use App\Games\Blackjack\Http\Requests\GameStarterRequest;
-use App\Games\Blackjack\Models\Game;
+use App\Models\Game;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Validator;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -45,15 +46,24 @@ class GameController extends Controller
     /**
      * Player start action
      *
-     * @param GameStarterRequest $request
+     * @param Request $request -> contains player name
      * @return Application|RedirectResponse|Redirector
      */
-    public function start(GameStarterRequest $request)
+    public function start(Request $request)
     {
         if (isset($this->game)) {
             session()->now('status', 'Game already started');
         } else {
-            $this->gameStarter($request->input('name'));
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string'
+            ]);
+
+            if($validator->fails()){
+                //missing name or name is not valid
+                return back()->withErrors($validator);
+             }
+
+             $this->gameStarter($request->input('name'));
         }
         return $this->response();
     }

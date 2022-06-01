@@ -3,7 +3,7 @@
         <form method="POST" action="{{ route('blackjack.start') }}">
             @csrf
             <div class="form-group">
-                <label for="name">Player Name</label>
+                <label for="name">Your Name</label>
                 <input type="text" class="form-control" id="name" name="name">
                 @if($errors->has('name'))
                     {{$errors->first('name')}}

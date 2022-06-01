@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        @if($game && $game->status === \App\Games\Blackjack\Models\Game::GAME_ENDED)
+        @if($game && $game->status === "GAME_ENDED")
             <div class="container justify-content-center mb-3">
                 <div class="row justify-content-center">
                     WINNER {{$game->winner}}

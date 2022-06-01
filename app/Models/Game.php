@@ -1,71 +1,31 @@
 <?php
 
-namespace App\Games\Blackjack\Models;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 class Game
-{
-    public const BLACKJACK_VALUE = 21;
-
-    public const PLAYER = 'PLAYER';
-    public const DEALER = 'DEALER';
-    public const DRAW = 'DRAW';
-
-    public const GAME_STARTED = 'GAME_STARTED';
-    public const GAME_ENDED = 'GAME_ENDED';
-
-    /**
-     * @var string
-     */
+{  
     public $playerName;
-
-    /**
-     * @var Carbon
-     */
-    public $delay;
-
-    /**
-     * @var Dealer
-     */
+    public $startTime;
     public $dealer;
-
-    /**
-     * @var Collection
-     */
     public $deck;
-
-    /**
-     * @var Hand
-     */
     public $playerHand;
-
-    /**
-     * @var Hand
-     */
     public $dealerHand;
-
-    /**
-     * @var string
-     */
     public $status;
-
-    /**
-     * @var string
-     */
     public $winner;
 
     /**
      * Game constructor.
      *
      * @param string $playerName
-     * @param Carbon $delay
+     * @param Carbon $startTime
      */
-    public function __construct(string $playerName, Carbon $delay)
+    public function __construct(string $playerName, Carbon $startTime)
     {
         $this->playerName = $playerName;
-        $this->delay = $delay;
+        $this->startTime = $startTime;
     }
 
     /**
@@ -73,8 +33,10 @@ class Game
      */
     public function start()
     {
+        //generate 6 decks of cards that includes 312 singles cards
         $this->deck = Deck::generate(6);
 
+        //create new hands instances and save it as prop
         $this->dealerHand = new Hand();
         $this->playerHand = new Hand();
 
@@ -88,7 +50,7 @@ class Game
         $this->dealer->hitDealer(false);
         $this->dealer->hitDealer();
 
-        $this->status = self::GAME_STARTED;
+        $this->status = 'GAME_STARTED';
         $this->winner = null;
     }
 
@@ -99,9 +61,9 @@ class Game
      */
     public function checkPlayerBust(): bool
     {
-        if ($this->playerHand->currentScore() > self::BLACKJACK_VALUE) {
-            $this->winner = self::DEALER;
-            $this->status = self::GAME_ENDED;
+        if ($this->playerHand->currentScore() > 21) {
+            $this->winner = 'DEALER';
+            $this->status = 'GAME_ENDED';
             $this->dealerHand->faceUpCard();
             return true;
         }
@@ -113,18 +75,18 @@ class Game
      */
     public function calculateWinner(): void
     {
-        $dealerBust = $this->dealerHand->currentScore() > self::BLACKJACK_VALUE;
-        $playerBust = $this->playerHand->currentScore() > self::BLACKJACK_VALUE;
+        $dealerBust = $this->dealerHand->currentScore() > 21;
+        $playerBust = $this->playerHand->currentScore() > 21;
         $playerHasBetterHand = $this->playerHand->currentScore() > $this->dealerHand->currentScore();
 
         if ($dealerBust || ($playerHasBetterHand && !$playerBust)) {
-            $this->winner = self::PLAYER;
+            $this->winner = 'YOU';
         } elseif ($this->dealerHand->currentScore() === $this->playerHand->currentScore()) {
-            $this->winner = self::DRAW;
+            $this->winner = 'DRAW';
         } else {
-            $this->winner = self::DEALER;
+            $this->winner = 'DEALER';
         }
 
-        $this->status = self::GAME_ENDED;
+        $this->status = 'GAME_ENDED';
     }
 }

@@ -1,7 +1,7 @@
 <div class="container mt-3">
     <div class="row justify-content-center">
 
-        @if($game->status === \App\Games\Blackjack\Models\Game::GAME_STARTED)
+        @if($game->status === "GAME_STARTED")
 
             <a class="btn btn-primary mr-2"
                role="button"
@@ -16,7 +16,7 @@
             </a>
         @endif
 
-        @if($game->status === \App\Games\Blackjack\Models\Game::GAME_ENDED)
+        @if($game->status === "GAME_ENDED")
             <a class="btn btn-success mr-2"
                role="button"
                href="{{route("blackjack.next")}}">
