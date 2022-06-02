@@ -76,6 +76,7 @@ class GameController extends Controller
      */
     public function hit()
     {
+        //pop card from the decks
         $this->game->dealer->hitPlayer();
         $this->game->checkPlayerBust();
         return $this->response();

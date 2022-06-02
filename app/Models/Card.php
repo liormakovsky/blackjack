@@ -4,7 +4,12 @@ namespace App\Models;
 
 class Card
 {
-    public const TYPES = ['Hearts', 'SPADES', 'CLUBS', 'DIAMONDS'];
+    public const TYPE_HEARTS = 'hearts';
+    public const TYPE_SPADES = 'spades';
+    public const TYPE_CLUBS = 'clubs';
+    public const TYPE_DIAMONDS = 'diamonds';
+
+    public const TYPES = [self::TYPE_HEARTS, self::TYPE_SPADES, self::TYPE_CLUBS, self::TYPE_DIAMONDS];
     public const CARDS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'JACK', 'QUEEN', 'KING'];
     public const CARD_VALUES = [
         'A' => 11,
@@ -17,9 +22,9 @@ class Card
         '8' => 8,
         '9' => 9,
         '10' => 10,
-        'JACK' => 12,
-        'QUEEN' => 13,
-        'KING' => 14,
+        'JACK' => 10,
+        'QUEEN' => 10,
+        'KING' => 10,
     ];
 
     private $type;
@@ -61,8 +66,10 @@ class Card
         }
 
         if (is_numeric($this->card)) {
+            //card contains number
             return $this->card;
         } else {
+            //card contains Jack,Queen or King
             return substr($this->card, 0, 1);
         }
     }
@@ -75,6 +82,7 @@ class Card
     public function getType(): string
     {
         if (!$this->facing) {
+            //card is hidden
             return "?";
         }
 

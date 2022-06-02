@@ -7,9 +7,6 @@ class Hand
     private const ACE_MIN_VALUE = 1;
     private const ACE_MAX_VALUE = 11;
 
-    /**
-     * @var Card[]
-     */
     private $cards;
 
     /**
@@ -54,6 +51,7 @@ class Hand
         $values = [];
         foreach ($this->cards as $card) {
             if ($card->getFacing()) {
+                //the card ins't hidden
                 $values[] = $card->getValue();
             }
         }
@@ -65,7 +63,7 @@ class Hand
      *
      * @return int
      */
-    public function currentScore(): int
+    public function currentScore()
     {
         $values = collect($this->values());
 
@@ -83,13 +81,16 @@ class Hand
         })->count();
 
         if (!$aceCount) {
+            //no aces found
             return $sum;
         } elseif ($aceCount >= 2) {
-            // if there is a lot of ace, count them as min value
+            // if there is a lot of ace, add them as 1
             return $sum + self::ACE_MIN_VALUE * 2;
         } elseif ($sum < self::ACE_MAX_VALUE) {
+            //the sum is less than 11 -> add 11
             return $sum + self::ACE_MAX_VALUE;
         } else {
+            //the sum is bigger than 11 -> add 1 
             return $sum + self::ACE_MIN_VALUE;
         }
     }

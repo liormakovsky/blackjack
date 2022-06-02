@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center text-white">
         <form method="POST" action="{{ route('blackjack.start') }}">
             @csrf
             <div class="form-group">

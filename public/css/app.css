@@ -1,0 +1,23 @@
+* {
+    box-sizing: border-box;
+}
+html {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url("../images/table.jpg");
+    height: 100vh;
+    display: block;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    background-position: center;
+}
