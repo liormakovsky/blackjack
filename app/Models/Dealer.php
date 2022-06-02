@@ -4,7 +4,6 @@ namespace App\Models;
 
 class Dealer
 {
-    private const DEALER_MAX_VALUE = 17;
 
     private $game;
 
@@ -40,10 +39,12 @@ class Dealer
      * Hit cards until to dealer max value (17)
      */
     public function hitDealerUntilToEnd()
-    {
+    {   
+        //display dealer hidden card
         $this->game->dealerHand->faceUpCard();
 
-        while ($this->game->dealerHand->currentScore() < self::DEALER_MAX_VALUE) {
+        while ($this->game->dealerHand->currentScore() < 17) {
+            //dealer score is less than 17, hit dealer
             $this->hitDealer();
         }
         $this->game->calculateWinner();

@@ -62,8 +62,10 @@ class Game
     public function checkPlayerBust(): bool
     {
         if ($this->playerHand->currentScore() > 21) {
+            //player busted
             $this->winner = 'DEALER';
             $this->status = 'GAME_ENDED';
+            //display dealer hidden card
             $this->dealerHand->faceUpCard();
             return true;
         }

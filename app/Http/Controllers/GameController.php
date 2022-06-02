@@ -14,11 +14,7 @@ use Illuminate\Routing\Redirector;
 
 class GameController extends Controller
 {
-    /**
-     * Main game object
-     *
-     * @var Game
-     */
+ 
     private $game;
 
     /**
@@ -28,6 +24,7 @@ class GameController extends Controller
     {
         //This middleware will set current game to controller.
         $this->middleware(function ($request, $next) {
+            //if game key is empty->set default value as null
             $this->game = session('game', null);
             return $next($request);
         });
@@ -78,6 +75,7 @@ class GameController extends Controller
     {
         //pop card from the decks
         $this->game->dealer->hitPlayer();
+        //check if the player busted
         $this->game->checkPlayerBust();
         return $this->response();
     }
@@ -89,12 +87,14 @@ class GameController extends Controller
      */
     public function stay()
     {
+        //revealed all dealer cards
         $this->game->dealer->hitDealerUntilToEnd();
         return $this->response();
     }
 
 
     /**
+     * player clicked on the next button
      * Prepare to next round
      *
      * @return Application|RedirectResponse|Redirector
@@ -107,6 +107,7 @@ class GameController extends Controller
 
 
     /**
+     * store game stats to session
      * Redirects every action to main page
      *
      * @return Application|RedirectResponse|Redirector
