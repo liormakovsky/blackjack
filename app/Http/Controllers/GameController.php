@@ -48,9 +48,8 @@ class GameController extends Controller
      */
     public function start(Request $request)
     {
-        if (isset($this->game)) {
-            session()->now('status', 'Game already started');
-        } else {
+        if (empty($this->game)) {
+            //$this->game = null, this is a new game 
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string'
             ]);
@@ -61,6 +60,8 @@ class GameController extends Controller
              }
 
              $this->gameStarter($request->input('name'));
+        } else {
+            session()->now('status', 'Game already started');
         }
         return $this->response();
     }
